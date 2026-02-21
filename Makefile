@@ -1,14 +1,23 @@
-.PHONY: setup lint format test
+VENV := .venv
+PY := $(VENV)/bin/python
+RUFF := $(VENV)/bin/ruff
+PYTEST := $(VENV)/bin/pytest
+PRECOMMIT := $(VENV)/bin/pre-commit
+
+.PHONY: setup lint format test precommit
 
 setup:
-	pip install -r requirements.txt -r requirements-dev.txt
-	pre-commit install
+	$(PY) -m pip install -r requirements.txt -r requirements-dev.txt
+	$(PRECOMMIT) install
 
 lint:
-	ruff check .
+	$(RUFF) check .
 
 format:
-	ruff format .
+	$(RUFF) format .
 
 test:
-	pytest
+	$(PYTEST)
+
+precommit:
+	$(PRECOMMIT) run --all-files
